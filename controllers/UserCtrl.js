@@ -47,6 +47,13 @@ const login = asyncHandler(
       return res.status(404).json({"message":"Password is wrong"});
     }
     const token = generateToken(user.id);
+    res.cookie(String(user._id), token, 
+    {
+      httpOnly: true,
+      path:"/",
+      expires: new Date(Date.now() + 1000*30),
+      sameSite: "lax"
+     });
     res.status(200).json({"User":user,"Token":token});
   }catch(error){
     throw new Error(error.message);
