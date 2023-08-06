@@ -44,15 +44,13 @@ const login = asyncHandler(
 
     const isMatched = await bcrypt.compare(password,user.password);
     if(!isMatched){
-      return res.status(404).json({"message":"Password is wrong"});
+      return res.status(401).json({"message":"Password is wrong"});
     }
     const token = generateToken(user.id);
     res.cookie(String(user._id), token, 
     {
       httpOnly: true,
-      path:"/",
-      expires: new Date(Date.now() + 1000*30),
-      sameSite: "lax"
+      expires: new Date(Date.now() + 1000*60)
      });
     res.status(200).json({"User":user,"Token":token});
   }catch(error){
