@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser')
 
 //Routes
 const userRoute = require('./routes/UserRoute')
+const propertyroute = require('./routes/PropertyRoute')
+const propertyCat = require('./routes/PropertyCatRoute')
 
 //Middleware
 const app = express();
@@ -18,6 +20,8 @@ dotenv.config();
 const PORT = 5000 || process.env.PORT;
 
 app.use('/api',userRoute);
+app.use('/api',propertyroute);
+app.use('/api',propertyCat);
 
 app.listen( PORT , () => {
     dbConnect();

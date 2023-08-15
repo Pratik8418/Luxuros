@@ -1,8 +1,8 @@
 import React, {useEffect,useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-
 let firstrender = true;
+
 const Header = () => {
   const [user,setUser] = useState();
   const getUserRequest = async () => {
@@ -25,7 +25,10 @@ const Header = () => {
   }
 
   useEffect(() => {
-    if(firstrender) { firstrender = false; getUserRequest(); }
+    if(firstrender){ 
+        getUserRequest();
+        firstrender=false;
+     } 
   },[])
 
   return (
