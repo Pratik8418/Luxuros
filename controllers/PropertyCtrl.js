@@ -12,4 +12,27 @@ const createProperty = asyncHandler(
   }
 )
 
-module.exports = {createProperty}
+const getProperty = asyncHandler(
+  async (req,res) => {
+    try{
+    const property = await Property.find(req.body);
+    res.json(property);
+    }catch(error){
+      throw new Error(error.message);
+    }
+  }
+)
+
+
+const getAllProperty = asyncHandler(
+  async (req,res) => {
+    try{
+    const property = await Property.find();
+    res.json(property);
+    }catch(error){
+      throw new Error(error.message);
+    }
+  }
+)
+
+module.exports = {createProperty,getProperty,getAllProperty}

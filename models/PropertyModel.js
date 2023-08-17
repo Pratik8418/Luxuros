@@ -1,6 +1,6 @@
 const mongoose = require('mongoose'); // Erase if already required
 
-var userSchema = new mongoose.Schema({
+var propertySchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -9,8 +9,16 @@ var userSchema = new mongoose.Schema({
     category:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "PropertyCat"
+    },
+    description:{
+        type: String,
+        required: true
+    },
+    address:{
+        type:String,
+        required:true
     }
 });
 
 //Export the model
-module.exports = mongoose.model('Property', userSchema);
+module.exports = mongoose.model('Property', propertySchema);

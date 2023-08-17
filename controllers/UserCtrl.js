@@ -50,7 +50,7 @@ const login = asyncHandler(
     res.cookie(String(user._id), token, 
     {
       httpOnly: true,
-      expires: new Date(Date.now() + 1000*60)
+      expires: new Date(Date.now() + 1000*60*10)
      });
     res.status(200).json({"User":user,"Token":token});
   }catch(error){

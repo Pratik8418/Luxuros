@@ -12,4 +12,15 @@ const createPropertyCat = asyncHandler(
   }
 )
 
-module.exports = {createPropertyCat}
+const getPropertyCat = asyncHandler(
+  async (req,res) => {
+    try{
+    const propertyCat = await PropertyCat.find();
+    res.json(propertyCat);
+    }catch(error){
+      throw new Error(error.message);
+    }
+  }
+)
+
+module.exports = {createPropertyCat,getPropertyCat}
