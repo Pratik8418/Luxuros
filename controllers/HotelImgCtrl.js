@@ -20,4 +20,15 @@ const uploadImg = asyncHandler(
   }
 )
 
-module.exports = {uploadImg}
+const getImages = asyncHandler(
+  async (req,res) => {
+    try{
+    const image = await HotelImage.find();
+    res.json(image);
+    }catch(error){
+      throw new Error(error.message);
+    }
+  }
+)
+
+module.exports = {uploadImg,getImages}

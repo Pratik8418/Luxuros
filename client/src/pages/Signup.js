@@ -20,9 +20,15 @@ const Signup = () => {
 
     axios.post("http://localhost:5000/api/createUser",data).then(
       (res) => { 
-        navigate('/login'); 
+        
         console.log(res.data);
-        message.success("Registration successfully"); 
+        if(res.data.message){
+          message.error(res.data.message);   
+        }else if(res.data){
+          navigate('/login'); 
+          message.success("Registration successfully"); 
+        }
+        
       }
     ).catch(
       (error) => {

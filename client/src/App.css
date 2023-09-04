@@ -250,3 +250,8 @@ a {
   color: #003580;
   text-decoration: none;
 }
+
+/* Imgae style of Home page */
+#image1{
+  height: 150px;
+}

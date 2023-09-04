@@ -9,7 +9,9 @@ const Home = () => {
   const [user, setUser] = useState();
   const [property, setproperty] = useState([]);
   const [propCategories, setpropCategories] = useState([]);
+  const [PropertyImage, setPropertyImage] = useState([]);
   const [selectedPropCategory, setSelectedPropCategory] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   const navigate = useNavigate();
   const getUserRequest = async () => {
@@ -35,21 +37,33 @@ const Home = () => {
   }
 
   useEffect(() => {
-      axios.get('http://localhost:5000/api/getAllProperty').then(response => {
-        setproperty(response.data);
-      });
+    axios.get('http://localhost:5000/api/getAllProperty').then(response => {
+      setproperty(response.data);
+    });
     axios.get('http://localhost:5000/api/getPropertyCat').then(response => {
       setpropCategories(response.data);
     });
+    axios.get('http://localhost:5000/api/getImages').then(response => {
+      setPropertyImage(response.data);
+    });
+
   }, []);
 
   const handleCategorySelect = (categoryId) => {
     setSelectedPropCategory(categoryId);
     console.log(selectedPropCategory);
   };
+  const handleHotelSelect = (hotelId) => {
+    setSelectedProperty(hotelId);
+    console.log(selectedProperty);
+  };
   const filteredHotels = selectedPropCategory
-  ? property.filter(hotel => hotel.category === selectedPropCategory)
-  : property;
+    ? property.filter(hotel => hotel.category === selectedPropCategory)
+    : property;
+
+  const filteredPropImages = selectedProperty
+    ? PropertyImage.filter(propertyImage => propertyImage.hotelId === selectedProperty)
+    : PropertyImage;
 
   useEffect(() => {
     if (firstrender) {
@@ -57,6 +71,14 @@ const Home = () => {
       firstrender = false;
     }
   }, [])
+
+  function arrayBufferToBase64(buffer) {
+    const binary = new Uint8Array(buffer).reduce(
+      (binaryString, byte) => binaryString + String.fromCharCode(byte),
+      ''
+    );
+    return btoa(binary);
+  }
 
   return (
     <>
@@ -70,7 +92,7 @@ const Home = () => {
           {propCategories.map(category => (
             <li><Link
               key={category._id}
-              onClick={() => {  handleCategorySelect(category._id); }}
+              onClick={() => { handleCategorySelect(category._id); }}
             >
               {category.name}
             </Link>
@@ -82,12 +104,27 @@ const Home = () => {
         <h2>Hotels</h2>
         <ul>
           {filteredHotels.map(hotel => (
-            <li key={hotel._id}>
-              <h3>{hotel.name}</h3>
-              {/* <p>{hotel.description}</p>
-              <p>Price: ${hotel.price}</p> */}
+            <li>
+              <Link key={hotel._id}
+                onClick={() => { handleHotelSelect(hotel._id); }}>
+                <h3>{hotel.name}</h3>
+                <p>{hotel.address}</p>
+                <p>{hotel.description}</p>
+              </Link>
+              
             </li>
           ))}
+          <li>
+            {filteredPropImages.map(image => (
+              <li>
+                <img
+                  src={`data:image/jpeg;base64,${arrayBufferToBase64(image.image.data.data)}`}
+                  alt="images"
+                  id='image1'
+                />
+              </li>
+            ))}
+          </li>
         </ul>
       </div>
     </>

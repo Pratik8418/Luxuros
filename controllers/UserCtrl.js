@@ -7,27 +7,30 @@ const createUser = asyncHandler(
   async (req,res) => {
     var {name,email,mobile,password} = req.body;
     try{
-       
+       console.log("step1");
        const isFound = await User.findOne({email});
        if(isFound){
         return res.json({"message":"User already Register with same email"});
        }
-
+       console.log("step2");
        const isFound2 = await User.findOne({mobile});
        if(isFound2){
         return res.json({"message":"User already Register with same mobile"});
+        console.log("user found");
        }
+       console.log("step3");
        const salt = await bcrypt.genSalt(10);
        password = await bcrypt.hash(password,salt);
-
+       console.log("step4");
        const user = await User.create({
         name,
         email,
         mobile,
         password
        });
-
+       console.log("step5");
        res.status(200).json(user);
+       console.log("step1");
     }catch(error){
        throw new Error(error.message);
     }
